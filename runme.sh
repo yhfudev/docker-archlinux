@@ -115,9 +115,9 @@ if [ ! -f "${FN_ARCHBASE}" ]; then
     curl https://raw.githubusercontent.com/docker/docker/master/contrib/mkimage-arch.sh > ./mkimage-arch.sh
     chmod +x mkimage-arch.sh
 
-    sed -i.bak \
-        -e 's/| docker import - archlinux/-af archlinux.tar.xz/g' \
-        -e '/docker run --rm -t archlinux echo Success./d' \
+    sed -i \
+        -e 's/tar --numeric-owner --xattrs .*$/tar --numeric-owner --xattrs --acls -C \$ROOTFS -af archlinux.tar.xz/g' \
+        -e 's/docker run --rm -t .*$//g' \
         mkimage-arch.sh
 
     curl https://raw.githubusercontent.com/docker/docker/master/contrib/mkimage-arch-pacman.conf > mkimage-arch-pacman.conf
@@ -127,7 +127,6 @@ TMPDIR=${DN_ROOT} sudo ./mkimage-arch.sh
 echo "Arch Linux-docker root filesystem archive build complete."
 
     rm -f mkimage-arch.sh
-    rm -f mkimage-arch.sh.bak
     rm -f mkimage-arch-pacman.conf
     mv "archlinux.tar.xz" "${FN_ARCHBASE}"
 fi
