@@ -76,7 +76,13 @@ cat > Dockerfile << EOF
 # https://github.com/yhfudev/docker-archlinux/blob/master/README.md
 FROM scratch
 MAINTAINER yhfudev <yhfudev@gmail.com>
+
 ADD ${FN_ARCHBASE} /
+
+# MOUNT cgroup:/sys/fs/cgroup/ # Rockerfile
+# MOUNT pacman:/var/cache/pacman/pkg/ # Rockerfile
+VOLUME [ "/sys/fs/cgroup" ]
+
 RUN pacman -Syyu --needed --noconfirm
 
 # install, run and remove reflector all in one line to prevent extra layer size
@@ -107,6 +113,11 @@ RUN sudo rm -rf /home/docker/*
 # install packer and update databases
 RUN yaourt -Syyua --noconfirm --needed packer
 USER root
+RUN pacman -Sc
+
+RUN sed -i -e 's/^#MAKEFLAGS.*/MAKEFLAGS="-j16"/g' /etc/makepkg.conf
+
+# PUSH yhfu/archlinux:latest # Rockerfile
 
 EOF
 fi

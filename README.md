@@ -14,9 +14,9 @@ Build baseline Arch Linux docker image
     ./runme.sh
     MYUSER=${USER}
     MYARCH=$(uname -m)
-    docker build -t ${MYUSER}/archlinux-${MYARCH}:latest .
+    sudo docker build -t ${MYUSER}/archlinux-${MYARCH}:latest .
 
 Run and test
 
-    sudo docker run -i -t --rm ${MYUSER}/archlinux-${MYARCH} bash
+    sudo docker run -i -t --rm ${MYUSER}/archlinux-${MYARCH} /bin/bash
 
