@@ -116,7 +116,7 @@ if [ ! -f "${FN_ARCHBASE}" ]; then
     chmod +x mkimage-arch.sh
 
     sed -i \
-        -e 's/tar --numeric-owner --xattrs .*$/tar --numeric-owner --xattrs --acls -C \$ROOTFS -af archlinux.tar.xz/g' \
+        -e 's/| docker import - .*$/ -af archlinux.tar.xz/g' \
         -e 's/docker run --rm -t .*$//g' \
         mkimage-arch.sh
 
